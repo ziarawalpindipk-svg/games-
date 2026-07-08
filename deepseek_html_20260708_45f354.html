@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>🎮 2 Games - Block Cascade & Gridora Drop</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: radial-gradient(circle at 30% 0%, #1a1030, #0a0620);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+    color: #f4eefc;
+    min-height: 100vh;
+    padding: 16px 14px 30px;
+  }
+  .container { max-width: 420px; margin: 0 auto; }
+  
+  /* Header */
+  .header {
+    text-align: center;
+    padding: 10px 0 16px;
+  }
+  .header h1 {
+    font-size: 26px;
+    font-weight: 800;
+    background: linear-gradient(90deg, #ff6b5b, #ffc145, #2dd4bf);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .header p {
+    color: #9a94c2;
+    font-size: 13px;
+    margin-top: 4px;
+  }
+
+  /* ============================================================
+     ADSTERRA BANNER — TOP (320×50)
+     Paste your Adsterra banner code inside this div.
+     ============================================================ */
+  #ad-top {
+    width: 100%;
+    max-width: 400px;
+    min-height: 50px;
+    margin: 0 auto 16px;
+    background: rgba(255,255,255,0.05);
+    border: 1.5px dashed rgba(255,255,255,0.15);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: #6a6490;
+    text-align: center;
+    padding: 6px;
+  }
+
+  /* Game Cards */
+  .game-card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 18px;
+    padding: 18px 16px 16px;
+    margin-bottom: 16px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+    text-decoration: none;
+    display: block;
+    color: inherit;
+  }
+  .game-card:active {
+    transform: scale(0.97);
+    box-shadow: 0 0 30px rgba(92, 225, 255, 0.15);
+  }
+  .game-card .badge {
+    display: inline-block;
+    background: rgba(255,107,91,0.2);
+    color: #ff6b5b;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+  .game-card h2 {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0 0 4px;
+  }
+  .game-card p {
+    color: #9a94c2;
+    font-size: 13px;
+    margin: 0 0 10px;
+  }
+  .game-card .play-btn {
+    display: inline-block;
+    background: linear-gradient(135deg, #5ce1ff, #ff5cb8);
+    color: #0a0620;
+    font-weight: 700;
+    font-size: 14px;
+    padding: 8px 22px;
+    border-radius: 30px;
+    border: none;
+    text-decoration: none;
+  }
+  .game-card .play-btn.small {
+    font-size: 12px;
+    padding: 6px 16px;
+  }
+  .card-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  /* Game 1 specific */
+  .game-card.g1 .badge { background: rgba(92,225,255,0.2); color: #5ce1ff; }
+  .game-card.g1 .play-btn { background: linear-gradient(135deg, #5ce1ff, #2dd4bf); }
+
+  /* Game 2 specific */
+  .game-card.g2 .badge { background: rgba(255,92,184,0.2); color: #ff5cb8; }
+  .game-card.g2 .play-btn { background: linear-gradient(135deg, #ff5cb8, #ff6b5b); }
+
+  /* ============================================================
+     ADSTERRA BANNER — BOTTOM (Native / Banner)
+     Paste your Adsterra native banner code here.
+     ============================================================ */
+  #ad-bottom {
+    width: 100%;
+    max-width: 400px;
+    min-height: 80px;
+    margin: 10px auto 0;
+    background: rgba(255,255,255,0.05);
+    border: 1.5px dashed rgba(255,255,255,0.15);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: #6a6490;
+    text-align: center;
+    padding: 10px;
+  }
+
+  .footer-links {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 12px;
+    color: #6a6490;
+  }
+  .footer-links a {
+    color: #6a6490;
+    text-decoration: none;
+    margin: 0 10px;
+  }
+  .footer-links a:hover { color: #f4eefc; }
+
+  /* Loading/iframe container */
+  #game-frame-wrap {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: #0a0620;
+    z-index: 1000;
+    padding: 10px;
+    flex-direction: column;
+  }
+  #game-frame-wrap.active {
+    display: flex;
+  }
+  #game-frame-wrap .close-btn {
+    background: rgba(255,255,255,0.1);
+    border: none;
+    color: #f4eefc;
+    font-size: 22px;
+    padding: 6px 14px;
+    border-radius: 30px;
+    align-self: flex-end;
+    cursor: pointer;
+    margin-bottom: 6px;
+  }
+  #game-frame {
+    flex: 1;
+    width: 100%;
+    border: none;
+    border-radius: 14px;
+    background: #0a0620;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <h1>🎮 2 Games Pack</h1>
+    <p>Choose your game &amp; play instantly — no install needed</p>
+  </div>
+
+  <!-- ============================================================
+       ADSTERRA BANNER — TOP (320×50)
+       👇 Paste your Adsterra banner code inside this div
+       ============================================================ -->
+  <div id="ad-top">
+    <!-- 🔹 ADSTERRA BANNER (320×50) CODE GOES HERE 🔹 -->
+    Adsterra Banner (320×50) — Place your code here
+  </div>
+
+  <!-- ============================================================
+       GAME 1: BLOCK CASCADE
+       ============================================================ -->
+  <a class="game-card g1" onclick="openGame('game1.html')">
+    <div class="badge">✦ Puzzle</div>
+    <h2>🧩 Block Cascade</h2>
+    <p>Drag colorful blocks onto the grid. Clear full rows &amp; columns. Relaxing &amp; addictive.</p>
+    <div class="card-row">
+      <span style="color:#6a6490;font-size:12px;">📱 Mobile friendly</span>
+      <span class="play-btn small">▶ Play Now</span>
+    </div>
+  </a>
+
+  <!-- ============================================================
+       GAME 2: GRIDORA DROP
+       ============================================================ -->
+  <a class="game-card g2" onclick="openGame('game2.html')">
+    <div class="badge">✦ Arcade</div>
+    <h2>⬇️ Gridora Drop</h2>
+    <p>Classic falling block puzzle. Rotate, slide, and drop to clear lines. Speed increases!</p>
+    <div class="card-row">
+      <span style="color:#6a6490;font-size:12px;">📱 Mobile friendly</span>
+      <span class="play-btn small">▶ Play Now</span>
+    </div>
+  </a>
+
+  <!-- ============================================================
+       ADSTERRA BANNER — BOTTOM (Native / Banner)
+       👇 Paste your Adsterra native/banner code inside this div
+       ============================================================ -->
+  <div id="ad-bottom">
+    <!-- 🔹 ADSTERRA NATIVE / BANNER CODE GOES HERE 🔹 -->
+    Adsterra Native Banner — Place your code here
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer-links">
+    <a href="about_us.html">About</a>
+    <a href="privacy_policy.html">Privacy Policy</a>
+  </div>
+
+</div>
+
+<!-- ============================================================
+     GAME FRAME (opens game inside same page)
+     ============================================================ -->
+<div id="game-frame-wrap">
+  <button class="close-btn" onclick="closeGame()">✕ Close</button>
+  <iframe id="game-frame" src=""></iframe>
+</div>
+
+<script>
+  function openGame(url) {
+    const wrap = document.getElementById('game-frame-wrap');
+    const frame = document.getElementById('game-frame');
+    frame.src = url;
+    wrap.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeGame() {
+    const wrap = document.getElementById('game-frame-wrap');
+    const frame = document.getElementById('game-frame');
+    frame.src = '';
+    wrap.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+  // Close on back button (mobile)
+  window.addEventListener('popstate', function(e) {
+    if (document.getElementById('game-frame-wrap').classList.contains('active')) {
+      closeGame();
+    }
+  });
+</script>
+
+</body>
+</html>
