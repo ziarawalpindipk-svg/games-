@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>🎮 2 Games Pack</title>
+<title>Cascade Arcade — 2 Puzzle Games</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&display=swap" rel="stylesheet">
@@ -21,6 +21,12 @@
   .header {
     text-align: center;
     padding: 10px 0 16px;
+  }
+  .app-icon {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+    filter: drop-shadow(0 8px 20px rgba(0,0,0,0.4));
   }
   .header h1 {
     font-family: 'Baloo 2', sans-serif;
@@ -135,6 +141,83 @@
   }
   .download-btn:hover { background: rgba(255,255,255,0.2); }
 
+  .share-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: #f4eefc;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 7px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  .share-btn:hover { background: rgba(255,255,255,0.16); }
+  .share-menu {
+    position: fixed;
+    inset: 0;
+    background: rgba(5,3,15,0.75);
+    display: none;
+    align-items: flex-end;
+    justify-content: center;
+    z-index: 2000;
+  }
+  .share-menu.show { display: flex; }
+  .share-sheet {
+    background: #170f2c;
+    border-radius: 20px 20px 0 0;
+    width: 100%;
+    max-width: 420px;
+    padding: 20px 18px 26px;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .share-sheet h3 {
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 16px;
+    margin-bottom: 14px;
+    text-align: center;
+  }
+  .share-options {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .share-opt {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    color: #f4eefc;
+    font-size: 11px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 12px;
+    padding: 10px 4px;
+  }
+  .share-opt .circle {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+  }
+  .share-close {
+    width: 100%;
+    padding: 11px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.08);
+    border: none;
+    color: #f4eefc;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
   .cta-smartlink {
     display: inline-flex;
     align-items: center;
@@ -209,8 +292,42 @@
 <div class="container">
 
   <div class="header">
-    <h1>🎮 2 Games Pack</h1>
-    <p>Choose your game &amp; play instantly — no install needed</p>
+    <div class="app-icon">
+      <svg width="72" height="72" viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="iconBg" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#3a2461"/>
+            <stop offset="100%" stop-color="#1a1030"/>
+          </linearGradient>
+          <linearGradient id="blockCoral" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#ff8f7f"/>
+            <stop offset="100%" stop-color="#e0503f"/>
+          </linearGradient>
+          <linearGradient id="blockTeal" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#5eeee0"/>
+            <stop offset="100%" stop-color="#1fae9c"/>
+          </linearGradient>
+          <linearGradient id="blockAmber" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#ffe08a"/>
+            <stop offset="100%" stop-color="#e0a300"/>
+          </linearGradient>
+        </defs>
+        <rect x="1" y="1" width="70" height="70" rx="18" fill="url(#iconBg)"/>
+        <rect x="1" y="1" width="70" height="70" rx="18" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1.5"/>
+        <!-- Falling piece (Gridora) -->
+        <rect x="30" y="8" width="11" height="11" rx="2.5" fill="url(#blockTeal)" opacity="0.55"/>
+        <!-- Stacked cascade blocks (Block Cascade) -->
+        <rect x="15" y="38" width="15" height="15" rx="3" fill="url(#blockCoral)"/>
+        <rect x="32" y="38" width="15" height="15" rx="3" fill="url(#blockAmber)"/>
+        <rect x="23.5" y="22" width="15" height="15" rx="3" fill="url(#blockTeal)"/>
+        <rect x="15" y="38" width="15" height="5" rx="2.5" fill="#ffffff" opacity="0.18"/>
+        <rect x="32" y="38" width="15" height="5" rx="2.5" fill="#ffffff" opacity="0.18"/>
+        <rect x="23.5" y="22" width="15" height="5" rx="2.5" fill="#ffffff" opacity="0.18"/>
+      </svg>
+    </div>
+    <h1>Cascade Arcade</h1>
+    <p>Two block puzzles, zero install — pick one and start playing in seconds</p>
+    <button class="share-btn" onclick="openShare()">📤 Share with friends</button>
   </div>
 
   <!-- ============================================================
@@ -285,6 +402,27 @@
   <iframe id="game-frame" src=""></iframe>
 </div>
 
+<div class="share-menu" id="shareMenu">
+  <div class="share-sheet">
+    <h3>Share Cascade Arcade</h3>
+    <div class="share-options">
+      <a class="share-opt" href="#" onclick="shareVia('whatsapp'); return false;">
+        <span class="circle" style="background:#25D366;">💬</span> WhatsApp
+      </a>
+      <a class="share-opt" href="#" onclick="shareVia('facebook'); return false;">
+        <span class="circle" style="background:#1877F2;">📘</span> Facebook
+      </a>
+      <a class="share-opt" href="#" onclick="shareVia('twitter'); return false;">
+        <span class="circle" style="background:#000;">✕</span> Twitter/X
+      </a>
+      <a class="share-opt" href="#" onclick="shareVia('copy'); return false;">
+        <span class="circle" style="background:rgba(255,255,255,0.15);">🔗</span> Copy Link
+      </a>
+    </div>
+    <button class="share-close" onclick="closeShare()">Close</button>
+  </div>
+</div>
+
 <script>
   function openGame(url) {
     const wrap = document.getElementById('game-frame-wrap');
@@ -305,6 +443,39 @@
       closeGame();
     }
   });
+
+  const SHARE_TITLE = 'Cascade Arcade';
+  const SHARE_TEXT = 'Play these 2 addictive puzzle games — free, no install needed!';
+
+  async function openShare() {
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: SHARE_TITLE, text: SHARE_TEXT, url: window.location.href });
+      } catch (e) { /* user cancelled, do nothing */ }
+    } else {
+      document.getElementById('shareMenu').classList.add('show');
+    }
+  }
+  function closeShare() {
+    document.getElementById('shareMenu').classList.remove('show');
+  }
+  function shareVia(platform) {
+    const url = encodeURIComponent(window.location.href);
+    const text = encodeURIComponent(SHARE_TEXT);
+    let target = '';
+    if (platform === 'whatsapp') target = `https://api.whatsapp.com/send?text=${text}%20${url}`;
+    else if (platform === 'facebook') target = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+    else if (platform === 'twitter') target = `https://twitter.com/intent/tweet?text=${text}&url=${url}`;
+    else if (platform === 'copy') {
+      navigator.clipboard.writeText(window.location.href).then(() => {
+        alert('Link copied! Paste it anywhere to share.');
+      });
+      closeShare();
+      return;
+    }
+    window.open(target, '_blank');
+    closeShare();
+  }
 </script>
 
 </body>

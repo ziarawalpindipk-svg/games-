@@ -388,6 +388,14 @@
         </svg>
         Download
       </a>
+      <button class="icon-btn" id="bb-share-btn" title="Share this game" style="padding:6px 9px;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="18" cy="5" r="3" stroke="currentColor" stroke-width="1.8"/>
+          <circle cx="6" cy="12" r="3" stroke="currentColor" stroke-width="1.8"/>
+          <circle cx="18" cy="19" r="3" stroke="currentColor" stroke-width="1.8"/>
+          <path d="M8.6 10.6l6.8-3.8M8.6 13.4l6.8 3.8" stroke="currentColor" stroke-width="1.8"/>
+        </svg>
+      </button>
     </div>
 
     <div class="bb-volume-row">
@@ -1192,6 +1200,23 @@
   loadSettings();
   loadStats();
   initSoundControls();
+
+  const shareBtn = document.getElementById('bb-share-btn');
+  if (shareBtn) {
+    shareBtn.addEventListener('click', async () => {
+      const shareData = {
+        title: 'Block Cascade',
+        text: 'Play Block Cascade — a relaxing block puzzle game, free and no install needed!',
+        url: window.location.href
+      };
+      if (navigator.share) {
+        try { await navigator.share(shareData); } catch (e) {}
+      } else if (navigator.clipboard) {
+        navigator.clipboard.writeText(shareData.url);
+        alert('Link copied! Paste it anywhere to share.');
+      }
+    });
+  }
 
   startGame();
 })();
