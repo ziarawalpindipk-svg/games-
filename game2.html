@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Gridora Drop - Falling Block Puzzle</title>
+
+<!-- ============================================================
+     🔹 ADSTERRA BANNER CODE
+     ============================================================ -->
+<script>
+  atOptions = {
+    'key' : '63f9cc601bd826eb8fbdc16d61a1bf4b',
+    'format' : 'iframe',
+    'height' : 50,
+    'width' : 320,
+    'params' : {}
+  };
+</script>
+<script src="https://www.highperformanceformat.com/63f9cc601bd826eb8fbdc16d61a1bf4b/invoke.js"></script>
+
+<style>
+  /* ===== ORIGINAL GAME CSS ===== */
+  :root{
+    --bg1:#0f1229;
+    --bg2:#05060f;
+    --board-bg: rgba(255,255,255,0.04);
+    --grid-line: rgba(255,255,255,0.06);
+    --accent:#5ce1ff;
+    --accent2:#ff5cb8;
+    --text:#f4f2ff;
+    --muted:#9a94c2;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color: transparent; user-select:none;}
+  html,body{
+    margin:0; padding:0; height:100%;
+    background: radial-gradient(circle at 50% 0%, var(--bg1), var(--bg2));
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+    color:var(--text);
+    overflow:hidden;
+    touch-action: none;
+  }
+  #app{
+    display:flex; flex-direction:column; align-items:center;
+    height:100%; width:100%; max-width:460px; margin:0 auto; padding:10px 10px 6px;
+  }
+  header{
+    width:100%; display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;
+  }
+  .logo{
+    font-size:20px; font-weight:800;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .stats{ display:flex; gap:8px; }
+  .stat-box{
+    background: rgba(255,255,255,0.06);
+    border-radius:10px; padding:5px 10px; text-align:center; min-width:52px;
+  }
+  .stat-box .label{ font-size:9px; color:var(--muted); text-transform:uppercase; letter-spacing:1px;}
+  .stat-box .value{ font-size:16px; font-weight:700; }
+
+  #ad-banner{
+    width:100%; height:50px; background:rgba(255,255,255,0.04);
+    border-radius:10px; margin-bottom:8px; flex-shrink:0; overflow:hidden;
+  }
+
+  #main-area{
+    display:flex; width:100%; gap:8px; flex:1; min-height:0;
+  }
+  #board-wrap{
+    flex:1;
+    background: var(--board-bg);
+    border-radius:12px; padding:5px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4), inset 0 0 0 1px rgba(255,255,255,0.05);
+    display:flex; align-items:center; justify-content:center;
+  }
+  #board{
+    display:grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(20, 1fr);
+    gap:1px;
+    width:100%; height:100%;
+    aspect-ratio: 10/20;
+  }
+  .cell{
+    background: rgba(255,255,255,0.05);
+    border-radius:2px;
+  }
+  .cell.filled{ box-shadow: inset 0 0 0 1px rgba(255,255,255,0.2); }
+  .cell.ghost{ background: rgba(255,255,255,0.12) !important; }
+  .cell.clearing{ animation: flash 0.25s ease forwards; }
+  @keyframes flash{
+    0%{ filter:brightness(1); opacity:1; }
+    50%{ filter:brightness(2.5); opacity:1; }
+    100%{ filter:brightness(2.5); opacity:0; }
+  }
+
+  #sidebar{
+    width:78px; display:flex; flex-direction:column; gap:8px; flex-shrink:0;
+  }
+  .panel{
+    background: rgba(255,255,255,0.04);
+    border-radius:10px; padding:6px; text-align:center;
+  }
+  .panel .label{ font-size:9px; color:var(--muted); text-transform:uppercase; margin-bottom:4px;}
+  #next-preview{
+    display:grid; grid-template-columns:repeat(4,1fr); grid-template-rows:repeat(4,1fr);
+    gap:1px; width:100%; aspect-ratio:1/1;
+  }
+  .np-cell{ background:transparent; border-radius:2px; }
+
+  #controls{
+    width:100%; display:flex; gap:6px; margin-top:8px; flex-shrink:0;
+  }
+  .ctrl-btn{
+    flex:1; height:52px; border-radius:12px; border:none;
+    background: rgba(255,255,255,0.08); color:var(--text);
+    font-size:20px; display:flex; align-items:center; justify-content:center;
+    cursor:pointer;
+  }
+  .ctrl-btn:active{ background: rgba(255,255,255,0.2); }
+  .ctrl-btn.wide{ flex:1.6; }
+  .ctrl-btn.accent{ background: linear-gradient(135deg, var(--accent), var(--accent2)); color:#101018; font-weight:800;}
+
+  #sound-toggle{
+    position:absolute; top:10px; right:10px; background:none; border:none;
+    color:var(--muted); font-size:18px; cursor:pointer; z-index:5;
+  }
+
+  #overlay{
+    position:fixed; inset:0; background:rgba(3,2,10,0.88);
+    display:none; align-items:center; justify-content:center; z-index:1000;
+    backdrop-filter: blur(4px);
+  }
+  #overlay.show{ display:flex; }
+  .modal{
+    background: linear-gradient(180deg, #1a1440, #0a0620);
+    border-radius:18px; padding:26px 24px; text-align:center;
+    width:82%; max-width:320px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    border:1px solid rgba(255,255,255,0.08);
+  }
+  .modal h2{ margin:0 0 4px; font-size:22px; }
+  .modal p{ color:var(--muted); margin:0 0 14px; font-size:13px;}
+  .modal .final-score{ font-size:38px; font-weight:800; margin:8px 0; color:var(--accent2);}
+  button.primary{
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border:none; color:#101018; font-weight:800; font-size:15px;
+    padding:13px 18px; border-radius:12px; width:100%; margin-top:8px;
+    cursor:pointer;
+  }
+  button.secondary{
+    background: rgba(255,255,255,0.08);
+    border:none; color:var(--text); font-weight:600; font-size:13px;
+    padding:11px 18px; border-radius:12px; width:100%; margin-top:8px;
+    cursor:pointer;
+  }
+  #startOverlay .modal{ max-width:300px; }
+
+  #ad-gameover-slot {
+    width:100%; max-width:300px; min-height:80px;
+    margin:8px auto 12px;
+    background:rgba(255,255,255,0.04);
+    border-radius:10px;
+    overflow:hidden;
+  }
+</style>
+</head>
+<body>
+<div id="app">
+  <button id="sound-toggle">🔊</button>
+  <header>
+    <div class="logo">GRIDORA DROP</div>
+    <div class="stats">
+      <div class="stat-box"><div class="label">Score</div><div class="value" id="score">0</div></div>
+      <div class="stat-box"><div class="label">Level</div><div class="value" id="level">1</div></div>
+    </div>
+  </header>
+
+  <!-- ===== AD BANNER ===== -->
+  <div id="ad-banner"></div>
+
+  <div id="main-area">
+    <div id="board-wrap"><div id="board"></div></div>
+    <div id="sidebar">
+      <div class="panel">
+        <div class="label">Next</div>
+        <div id="next-preview"></div>
+      </div>
+      <div class="panel">
+        <div class="label">Lines</div>
+        <div class="value" id="lines" style="font-size:18px;font-weight:700;">0</div>
+      </div>
+      <div class="panel">
+        <div class="label">Best</div>
+        <div class="value" id="best" style="font-size:16px;font-weight:700;">0</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="controls">
+    <button class="ctrl-btn" id="btnLeft">◀</button>
+    <button class="ctrl-btn" id="btnRotate">⟳</button>
+    <button class="ctrl-btn" id="btnRight">▶</button>
+    <button class="ctrl-btn wide accent" id="btnDrop">DROP</button>
+  </div>
+</div>
+
+<div id="overlay">
+  <div class="modal">
+    <h2>Game Over</h2>
+    <p>The stack reached the top</p>
+    <div class="final-score" id="finalScore">0</div>
+
+    <!-- ============================================================
+         🔹 ADSTERRA NATIVE AD (Game-Over)
+         ============================================================ -->
+    <div id="ad-gameover-slot">
+      <script async="async" data-cfasync="false" src="https://pl30278109.effectivecpmnetwork.com/37bcd87f9b90a477e2b211daed1f289b/invoke.js"></script>
+      <div id="container-37bcd87f9b90a477e2b211daed1f289b"></div>
+    </div>
+
+    <button class="primary" id="watchAdBtn">▶ Watch Ad: Clear Bottom Row</button>
+    <button class="secondary" id="restartBtn">Play Again</button>
+  </div>
+</div>
+
+<div id="startOverlay" class="show" style="position:fixed;inset:0;background:rgba(3,2,10,0.92);display:flex;align-items:center;justify-content:center;z-index:1001;">
+  <div class="modal">
+    <h2 style="background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent;">GRIDORA DROP</h2>
+    <p>Blocks fall automatically. Rotate and slide them to clear lines before the stack reaches the top. Speed increases every level!</p>
+    <button class="primary" id="startBtn">▶ Start Game</button>
+  </div>
+</div>
+
+<script>
+  // ===== ORIGINAL GAME JAVASCRIPT (Same as before) =====
+  alert('Game 2 - Gridora Drop (Add your full game JS here)');
+</script>
+</body>
+</html>
